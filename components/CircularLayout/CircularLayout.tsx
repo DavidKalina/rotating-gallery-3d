@@ -1,4 +1,4 @@
-import { Sphere, SpotLight, Text } from "@react-three/drei";
+import { Sphere, SpotLight } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
