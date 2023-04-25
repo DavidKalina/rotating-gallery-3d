@@ -2,6 +2,7 @@ import { Sphere, SpotLight, Text } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
+import BobAnimation from "../BobAnimation";
 
 interface CircularLayoutProps {
   radius: number;
@@ -66,22 +67,15 @@ const CircularLayout = ({
             ref={(ref) => (boxRefs.current[index] = ref)}
             rotation={index === currentObjectIndex ? [0, -rotation, 0] : [0, 0, 0]}
           >
-            {index === currentObjectIndex && (
-              <SpotLight intensity={0.2} angle={0.5} position={[1, 3, 0]} />
-            )}
-            {child}
-            <Text
-              position={[0, 1, 0]}
-              fontSize={0.5}
-              color="white"
-              anchorX="center"
-              anchorY="middle"
-            >
-              {index}
-            </Text>
+            {index === currentObjectIndex ? <BobAnimation>{child}</BobAnimation> : child}
           </group>
         ))}
       </group>
+      <SpotLight
+        angle={-1}
+        intensity={20}
+        position={[objectPositions[0].x, objectPositions[0].y + 4, objectPositions[0].z]}
+      />
       <Sphere position={observerPosition} args={[0.5, 16, 16]} />
     </>
   );
