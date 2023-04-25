@@ -25,6 +25,8 @@ const CircularLayout = ({
 
   const boxRefs = useRef<(THREE.Object3D | null)[]>([]);
 
+  const [notCurrentRotation, setNotCurrentRotation] = useState(0);
+
   const objectPositions = useMemo(() => {
     return children.map((_, index) => {
       const angle = (2 * Math.PI * index) / children.length;
@@ -54,6 +56,7 @@ const CircularLayout = ({
       const delta = (targetRotation - groupRef.current.rotation.y) * 0.1;
       setRotation((prevRotation) => prevRotation + delta);
       groupRef.current.rotation.y += delta;
+      setNotCurrentRotation((prevRotation) => (prevRotation += 0.02));
     }
   });
 
@@ -65,7 +68,11 @@ const CircularLayout = ({
             key={index}
             position={objectPositions[index]}
             ref={(ref) => (boxRefs.current[index] = ref)}
-            rotation={index === currentObjectIndex ? [0, -rotation, 0] : [0, 0, 0]}
+            rotation={
+              index === currentObjectIndex
+                ? [0, -rotation, 0]
+                : [0, notCurrentRotation, notCurrentRotation]
+            }
           >
             {index === currentObjectIndex ? <BobAnimation>{child}</BobAnimation> : child}
           </group>
